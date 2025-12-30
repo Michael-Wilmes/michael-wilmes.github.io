@@ -3,10 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>[DEIN NAME] – Softwareentwicklung · Edge-AI · KI/ML</title>
-  <meta name="description" content="Technisches Portfolio & Dokumentation eines Edge-AI-Projekts (Embedded, MQTT, Offline-Inference) – aktuell im B.Sc. Informatik mit Schwerpunkt KI/ML." />
+  <title>Michael Wilmes – Softwareentwicklung · Edge-AI · KI/ML</title>
+  <meta name="description" content="Technisches Portfolio & Dokumentation eines Edge-AI-Projekts (Embedded, MQTT, Offline-Inference) – B.Sc. Informatik mit Schwerpunkt KI/ML." />
 
   <style>
+    /* ==========================================================
+       TRON (dezent, seriös, lesbar) – kompletter Style-Branch
+       ========================================================== */
+
     :root{
       --bg0:#05070b;
       --bg1:#070b12;
@@ -20,6 +24,8 @@
       --a1:#4cc9f0;   /* neon cyan */
       --a2:#60a5fa;   /* soft blue */
       --a3:#22d3ee;   /* bright cyan */
+
+      --line:rgba(232,241,251,.12);
 
       --shadow:0 14px 38px rgba(0,0,0,.50);
       --radius:18px;
@@ -36,13 +42,14 @@
       font-family:var(--sans);
       color:var(--text);
       line-height:1.55;
+
       background:
         radial-gradient(1100px 580px at 16% 10%, rgba(96,165,250,.10), transparent 60%),
         radial-gradient(1000px 600px at 84% 12%, rgba(76,201,240,.08), transparent 55%),
         linear-gradient(180deg, var(--bg0), var(--bg1) 55%, var(--bg0));
     }
 
-    /* Top-Fade als Seiten-Overlay (statt Header-Fläche) */
+    /* Top-Fade als Seiten-Overlay (verhindert abgesetzten Header) */
     body::before{
       content:"";
       position:fixed;
@@ -84,94 +91,66 @@
       z-index:10;
       max-width:var(--max);
       margin:0 auto;
-      padding: 20px 18px 72px;
+      padding: 18px 18px 72px;
     }
 
-    /* Header: komplett transparent, nur Blur + Linie */
-header{
-  position: sticky;
-  top: 0;
-  z-index: 30;
+    /* ==========================================================
+       Header (Logo groß genug, kein Balken)
+       ========================================================== */
+    header.site-header{
+      position:sticky;
+      top:0;
+      z-index:30;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
 
-  padding: 14px 0 16px;
+      padding: 16px 0 16px;
 
-  /* WICHTIG: kein eigener Hintergrund */
-  background: transparent;
+      background: transparent;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
 
-  /* Blur ja, aber ohne dunklen Balken */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
+    /* dezente Tron-Linie */
+    header.site-header::after{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      bottom: 6px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
+      opacity:.60;
+      pointer-events:none;
+    }
 
-/* nur eine Tron-Linie, kein Block */
-header::after{
-  content:"";
-  position:absolute;
-  left:0; right:0;
-  bottom: 6px;
-  height:1px;
-  background: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
-  opacity:.55;
-  pointer-events:none;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      min-height:56px;
+      margin-bottom: 1rem;
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
+    .brand img.logo{
+      height: 80px;           /* wichtig: sichtbar & wertig */
+      width: auto;
+      display:block;
+      opacity: .98;
+      margin-left:-80px;
+      _filter: drop-shadow(0 0 14px rgba(76,201,240,.22));
+      _transform: translateY(1px); /* optische Stabilität */
+    }
 
-  /* Dezent, damit es nicht wie ein Button wirkt */
-  padding: 6px 10px;
-  border-radius: 999px;
+    nav.main-nav{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
 
-  background: rgba(10,14,22,.08);
-  border: 1px solid rgba(96,165,250,.14);
-}
-
-.brand img.logo{
-  height: 34px;
-  width: auto;
-  display:block;
-  flex: 0 0 auto;
-  opacity: .98;
-  filter: drop-shadow(0 0 10px rgba(76,201,240,.14));
-}
-
-.brand-text{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  line-height:1.1;
-}
-
-.brand-name{
-  font-weight: 650;
-  letter-spacing: .18px;
-  font-size: 14px;
-  color: rgba(232,241,251,.92);
-}
-
-.brand-tag{
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: .10px;
-  color: rgba(232,241,251,.65);
-}
-
-@media (max-width: 860px){
-  .brand{ padding: 6px 9px; gap:10px; }
-  .brand img.logo{ height: 30px; }
-  .brand-name{ font-size: 13px; }
-  .brand-tag{ font-size: 11px; }
-}
-
-    nav{ display:flex; gap:10px; flex-wrap:wrap; }
-    nav a{
+    nav.main-nav a{
       border-bottom:none;
       padding:7px 10px;
       border-radius:999px;
@@ -179,13 +158,15 @@ header::after{
       background: rgba(10,14,22,.18);
       color:rgba(232,241,251,.78);
     }
-    nav a:hover{
+    nav.main-nav a:hover{
       border-color: rgba(76,201,240,.32);
-      box-shadow: 0 0 18px rgba(76,201,240,.16);
-      color: var(--text);
+      box-shadow: 0 0 14px rgba(76,201,240,.18);
+      color: rgba(232,241,251,.95);
     }
 
-    /* Hero */
+    /* ==========================================================
+       Hero
+       ========================================================== */
     .hero{
       position:relative;
       border-radius: var(--radius);
@@ -222,7 +203,7 @@ header::after{
     .kicker .dot{
       width:8px; height:8px; border-radius:999px;
       background: var(--a1);
-      box-shadow: 0 0 18px rgba(76,201,240,.22);
+      box-shadow: 0 0 18px rgba(76,201,240,.20);
     }
 
     h1{
@@ -233,7 +214,9 @@ header::after{
     }
     .sub{ margin:0; color: var(--muted); max-width: 76ch; }
 
-    /* Grid */
+    /* ==========================================================
+       Grid
+       ========================================================== */
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -244,7 +227,9 @@ header::after{
     .span-5{ grid-column: span 5; }
     .span-12{ grid-column: span 12; }
 
-    /* Cards: Tron-Rahmen ohne HTML-Ecken */
+    /* ==========================================================
+       Cards: Tron-Rahmen stabil + Corner-Segmente (CSS-only)
+       ========================================================== */
     .card{
       position:relative;
       border-radius: var(--radius);
@@ -254,7 +239,7 @@ header::after{
       overflow:hidden;
     }
 
-    /* 1) Gradient-Rahmen (stabil, kein Layoutbruch) */
+    /* Gradient Border (1px) */
     .card::before{
       content:"";
       position:absolute;
@@ -263,9 +248,9 @@ header::after{
       padding:1px;
       background: linear-gradient(120deg,
         transparent 0%,
-        rgba(76,201,240,.72) 24%,
-        rgba(96,165,250,.92) 50%,
-        rgba(76,201,240,.72) 76%,
+        rgba(76,201,240,.78) 24%,
+        rgba(96,165,250,.96) 50%,
+        rgba(76,201,240,.78) 76%,
         transparent 100%);
       -webkit-mask:
         linear-gradient(#000 0 0) content-box,
@@ -276,20 +261,18 @@ header::after{
       opacity:.72;
     }
 
-    /* 2) Corner-Segmente per CSS (keine Spans mehr) */
+    /* Corner Segments (rein grafisch, bricht nie Layout) */
     .card{
-      --c: rgba(96,165,250,.90);
-      --cw: 16px;   /* Corner-Länge */
-      --ct: 2px;    /* Corner-Dicke */
-      --ci: 10px;   /* Corner-Abstand nach innen */
+      --c: rgba(96,165,250,.92);
+      --cw: 18px;  /* Corner-Länge */
+      --ct: 2px;   /* Corner-Dicke */
+      --ci: 10px;  /* Corner-Inset */
     }
-
     .card .corners{
       position:absolute;
       inset:0;
       border-radius:inherit;
       pointer-events:none;
-      /* 8 Linien: je 2 pro Ecke (horizontal + vertikal) */
       background:
         /* TL */
         linear-gradient(var(--c),var(--c)) left  var(--ci) top    var(--ci) / var(--cw) var(--ct) no-repeat,
@@ -307,20 +290,20 @@ header::after{
       opacity:.78;
     }
 
-    /* 3) Subtiles Glow (nur als Effekt, nicht als Rahmen) */
+    /* Subtiles Glow (hover) */
     .card::after{
       content:"";
       position:absolute;
       inset:-1px;
       border-radius:inherit;
       box-shadow:
-        0 0 18px rgba(76,201,240,.20),
-        inset 0 0 14px rgba(76,201,240,.07);
-      opacity:.52;
+        0 0 18px rgba(76,201,240,.18),
+        inset 0 0 14px rgba(76,201,240,.06);
+      opacity:.50;
       pointer-events:none;
       transition: opacity .18s ease;
     }
-    .card:hover::after{ opacity:.82; }
+    .card:hover::after{ opacity:.80; }
 
     .card h2{ margin:0 0 8px; font-size:16px; }
     .card p{ margin:0 0 10px; color: var(--muted); }
@@ -360,7 +343,7 @@ header::after{
     }
     .links a:hover{
       border-color: rgba(76,201,240,.32);
-      box-shadow: 0 0 18px rgba(76,201,240,.16);
+      box-shadow: 0 0 14px rgba(76,201,240,.16);
     }
 
     .divider{
@@ -394,7 +377,7 @@ header::after{
     .check{
       background: rgba(76,201,240,.10);
       border-color: rgba(76,201,240,.35);
-      box-shadow: 0 0 18px rgba(76,201,240,.16);
+      box-shadow: 0 0 18px rgba(76,201,240,.14);
       color: rgba(232,241,251,.92);
     }
     .todo{
@@ -413,41 +396,10 @@ header::after{
     }
     .small{ color: rgba(232,241,251,.58); font-size:12px; }
 
-    .brand img.logo {
-  height: 34px;           /* Header-Größe */
-  width: auto;
-  display: block;
-  opacity: .95;           /* leicht gedimmt, wirkt edel */
-  filter: drop-shadow(0 0 10px rgba(76,201,240,.18));
-}
-
-@media (max-width: 860px){
-  .brand img.logo { height: 30px; }
-}
-
-/* Optional: großes Logo im Hero */
-.hero-logo {
-  margin: 10px 0 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hero-logo img {
-  height: 90px;           /* Hero-Größe */
-  width: auto;
-  display: block;
-  filter: drop-shadow(0 0 18px rgba(76,201,240,.22));
-  opacity: .98;
-}
-
-@media (max-width: 860px){
-  .hero-logo img { height: 70px; }
-}
     @media (max-width: 860px){
       .span-7, .span-5{ grid-column: span 12; }
-      nav{ display:none; }
-      header{ padding-bottom:14px; }
+      nav.main-nav{ display:none; }
+      .brand img.logo{ height: 44px; }
     }
   </style>
 </head>
@@ -456,17 +408,13 @@ header::after{
   <div class="gridlines" aria-hidden="true"></div>
 
   <div class="wrap">
-    <header>
-    <div class="brand">
-      <img class="logo" src="assets/logo_2.png" alt="Michael Wilmes Logo" />
-      <div class="brand-text">
-        <div class="brand-name">MICHAEL WILMES</div>
-        <div class="brand-tag">development · edge · ml</div>
+    <header class="site-header">
+      <div class="brand">
+        <!-- Logo-Pfad ggf. anpassen: assets/logo.png oder logo.png -->
+        <img class="logo" src="assets/logo_2.png" alt="Michael Wilmes Logo" />
       </div>
-    </div>
 
-
-      <nav>
+      <nav class="main-nav">
         <a href="#profil">Profil</a>
         <a href="#projekt">Edge-AI</a>
         <a href="#roadmap">Roadmap</a>
@@ -476,11 +424,10 @@ header::after{
 
     <section class="hero" id="profil">
       <span class="kicker"><span class="dot"></span> Portfolio & Projekt-Dokumentation (langfristig)</span>
- 
 
       <h1>Softwareentwicklung · Edge-AI · KI/ML</h1>
       <p class="sub">
-        Hi, ich bin <strong>[DEIN NAME]</strong> – Softwareentwickler (C#, Angular) und derzeit im berufsbegleitenden
+        Hi, ich bin <strong>Michael Wilmes</strong> – Softwareentwickler (C#, Angular) und derzeit im berufsbegleitenden
         <strong>B.Sc. Informatik</strong> mit Schwerpunkt <strong>Künstliche Intelligenz / Machine Learning</strong> (WBH).
         Diese Seite bündelt mein technisches Profil und dokumentiert ein praxisnahes Edge-AI-Projekt.
       </p>
@@ -507,17 +454,19 @@ header::after{
         </div>
 
         <div class="card span-5" id="kontakt">
+
           <h2>Kontakt & Links</h2>
           <p>Für fachlichen Austausch (Edge, MQTT, Embedded, KI/ML):</p>
           <div class="links">
-            <a href="[LINKEDIN-URL]" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="[GITHUB-URL]" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="mailto:[DEINE-MAIL]">E-Mail</a>
+            <a href="https://www.linkedin.com/in/DEIN-LINKEDIN" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://github.com/michael-wilmes" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:DEINE-MAIL@DOMAIN.TLD">E-Mail</a>
           </div>
-          <p class="small" style="margin-top:10px;">Tipp: Links sind Platzhalter – einfach ersetzen.</p>
+          <p class="small" style="margin-top:10px;">Tipp: Links oben bitte auf deine echten Daten anpassen.</p>
         </div>
 
         <div class="card span-12" id="projekt">
+
           <h2>Projekt: Edge-AI Testumgebung (isoliertes Netz)</h2>
           <p>
             Ich baue eine kleine, isolierte Hardware-Umgebung mit mehreren Embedded-Geräten (u. a. Raspberry Pis) auf.
@@ -563,10 +512,10 @@ header::after{
       </div>
 
       <footer>
-        <div>© <span id="year"></span> [DEIN NAME]</div>
+        <div>© <span id="year"></span> Michael Wilmes</div>
         <div class="links">
           <a href="#profil">Nach oben</a>
-          <a href="[IMPRINT-URL-ODER-REPO]" target="_blank" rel="noreferrer">Impressum/Repo</a>
+          <a href="https://github.com/michael-wilmes/michael-wilmes.github.io" target="_blank" rel="noreferrer">Repo</a>
         </div>
       </footer>
     </section>
@@ -576,5 +525,4 @@ header::after{
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
-
 </html>
