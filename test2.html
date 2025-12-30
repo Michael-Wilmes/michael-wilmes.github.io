@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[DEIN NAME] – Softwareentwicklung · Edge-AI · KI/ML</title>
+  <meta name="description" content="Technisches Portfolio & Dokumentation eines Edge-AI-Projekts (Embedded, MQTT, Offline-Inference) – aktuell im B.Sc. Informatik mit Schwerpunkt KI/ML." />
+
+  <style>
+    :root{
+      --bg0:#05070b;
+      --bg1:#070b12;
+
+      --panelA:rgba(12,17,28,.82);
+      --panelB:rgba(10,14,22,.72);
+
+      --text:#e8f1fb;
+      --muted:rgba(232,241,251,.70);
+
+      --a1:#4cc9f0;   /* neon cyan */
+      --a2:#60a5fa;   /* soft blue */
+      --a3:#22d3ee;   /* bright cyan */
+
+      --shadow:0 14px 38px rgba(0,0,0,.50);
+      --radius:18px;
+      --max:980px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      line-height:1.55;
+      background:
+        radial-gradient(1100px 580px at 16% 10%, rgba(96,165,250,.10), transparent 60%),
+        radial-gradient(1000px 600px at 84% 12%, rgba(76,201,240,.08), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 55%, var(--bg0));
+    }
+
+    /* Top-Fade als Seiten-Overlay (statt Header-Fläche) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:5;
+      background: linear-gradient(
+        180deg,
+        rgba(5,7,11,.55) 0%,
+        rgba(5,7,11,.22) 18%,
+        rgba(5,7,11,.06) 32%,
+        transparent 46%
+      );
+    }
+
+    /* Subtiles Tron-Grid (maskiert) */
+    .gridlines{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      opacity:.45;
+      background:
+        linear-gradient(to right, rgba(96,165,250,.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(96,165,250,.05) 1px, transparent 1px);
+      background-size:84px 84px;
+      mask-image: radial-gradient(920px 520px at 28% 20%, rgba(0,0,0,.88), transparent 72%);
+    }
+
+    a{
+      color:var(--text);
+      text-decoration:none;
+      border-bottom:1px solid rgba(232,241,251,.22);
+    }
+    a:hover{ border-bottom-color:rgba(232,241,251,.55); }
+
+    .wrap{
+      position:relative;
+      z-index:10;
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 20px 18px 72px;
+    }
+
+    /* Header: komplett transparent, nur Blur + Linie */
+    header{
+      position:sticky;
+      top:0;
+      z-index:30;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+
+      padding: 14px 0 16px;
+
+      background: transparent;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    header::after{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      bottom: 6px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      padding: 8px 10px;
+      border-radius:999px;
+
+      background: rgba(10,14,22,.18);
+      border: 1px solid rgba(96,165,250,.18);
+    }
+    .brand .mark{
+      width:10px; height:10px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, var(--a3), var(--a1));
+      box-shadow: 0 0 18px rgba(76,201,240,.22);
+    }
+    .brand .name{ font-weight:650; letter-spacing:.25px; }
+    .brand .tag{
+      font-family:var(--mono);
+      font-size:12px;
+      color:rgba(232,241,251,.70);
+      border-left:1px solid rgba(232,241,251,.14);
+      padding-left:10px;
+      margin-left:2px;
+      white-space:nowrap;
+    }
+
+    nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    nav a{
+      border-bottom:none;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(232,241,251,.12);
+      background: rgba(10,14,22,.18);
+      color:rgba(232,241,251,.78);
+    }
+    nav a:hover{
+      border-color: rgba(76,201,240,.32);
+      box-shadow: 0 0 18px rgba(76,201,240,.16);
+      color: var(--text);
+    }
+
+    /* Hero */
+    .hero{
+      position:relative;
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      background: linear-gradient(180deg, rgba(12,17,28,.90), rgba(10,14,22,.66));
+      box-shadow:
+        0 0 0 1px rgba(96,165,250,.18),
+        0 0 26px rgba(76,201,240,.16),
+        0 20px 44px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, transparent, rgba(76,201,240,.10), transparent),
+        linear-gradient(180deg, rgba(96,165,250,.10), transparent 45%);
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(96,165,250,.22);
+      background: rgba(10,14,22,.28);
+      color: rgba(232,241,251,.75);
+      font-size:13px;
+    }
+    .kicker .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: var(--a1);
+      box-shadow: 0 0 18px rgba(76,201,240,.22);
+    }
+
+    h1{
+      margin: 14px 0 8px;
+      font-size: clamp(26px, 4vw, 40px);
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .sub{ margin:0; color: var(--muted); max-width: 76ch; }
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+    .span-7{ grid-column: span 7; }
+    .span-5{ grid-column: span 5; }
+    .span-12{ grid-column: span 12; }
+
+    /* Cards: Tron-Rahmen ohne HTML-Ecken */
+    .card{
+      position:relative;
+      border-radius: var(--radius);
+      padding: 16px;
+      background: linear-gradient(180deg, var(--panelA), var(--panelB));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    /* 1) Gradient-Rahmen (stabil, kein Layoutbruch) */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background: linear-gradient(120deg,
+        transparent 0%,
+        rgba(76,201,240,.72) 24%,
+        rgba(96,165,250,.92) 50%,
+        rgba(76,201,240,.72) 76%,
+        transparent 100%);
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events:none;
+      opacity:.72;
+    }
+
+    /* 2) Corner-Segmente per CSS (keine Spans mehr) */
+    .card{
+      --c: rgba(96,165,250,.90);
+      --cw: 16px;   /* Corner-Länge */
+      --ct: 2px;    /* Corner-Dicke */
+      --ci: 10px;   /* Corner-Abstand nach innen */
+    }
+
+    .card .corners{
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      /* 8 Linien: je 2 pro Ecke (horizontal + vertikal) */
+      background:
+        /* TL */
+        linear-gradient(var(--c),var(--c)) left  var(--ci) top    var(--ci) / var(--cw) var(--ct) no-repeat,
+        linear-gradient(var(--c),var(--c)) left  var(--ci) top    var(--ci) / var(--ct) var(--cw) no-repeat,
+        /* TR */
+        linear-gradient(var(--c),var(--c)) right var(--ci) top    var(--ci) / var(--cw) var(--ct) no-repeat,
+        linear-gradient(var(--c),var(--c)) right var(--ci) top    var(--ci) / var(--ct) var(--cw) no-repeat,
+        /* BL */
+        linear-gradient(var(--c),var(--c)) left  var(--ci) bottom var(--ci) / var(--cw) var(--ct) no-repeat,
+        linear-gradient(var(--c),var(--c)) left  var(--ci) bottom var(--ci) / var(--ct) var(--cw) no-repeat,
+        /* BR */
+        linear-gradient(var(--c),var(--c)) right var(--ci) bottom var(--ci) / var(--cw) var(--ct) no-repeat,
+        linear-gradient(var(--c),var(--c)) right var(--ci) bottom var(--ci) / var(--ct) var(--cw) no-repeat;
+      filter: drop-shadow(0 0 10px rgba(76,201,240,.14));
+      opacity:.78;
+    }
+
+    /* 3) Subtiles Glow (nur als Effekt, nicht als Rahmen) */
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:inherit;
+      box-shadow:
+        0 0 18px rgba(76,201,240,.20),
+        inset 0 0 14px rgba(76,201,240,.07);
+      opacity:.52;
+      pointer-events:none;
+      transition: opacity .18s ease;
+    }
+    .card:hover::after{ opacity:.82; }
+
+    .card h2{ margin:0 0 8px; font-size:16px; }
+    .card p{ margin:0 0 10px; color: var(--muted); }
+
+    .note{
+      border-left: 3px solid rgba(76,201,240,.85);
+      padding: 10px 12px;
+      background: rgba(76,201,240,.07);
+      border-radius: 12px;
+      color: var(--muted);
+    }
+
+    .badges{ margin-top: 6px; }
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(232,241,251,.12);
+      background: rgba(10,14,22,.20);
+      color: rgba(232,241,251,.70);
+      font-size:12px;
+      margin: 6px 6px 0 0;
+    }
+    .badge.accent{
+      border-color: rgba(76,201,240,.35);
+      box-shadow: 0 0 0 2px rgba(76,201,240,.08);
+    }
+
+    .links{ display:flex; gap:10px; flex-wrap:wrap; }
+    .links a{
+      border-bottom:none;
+      padding:8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(232,241,251,.12);
+      background: rgba(10,14,22,.18);
+      color: rgba(232,241,251,.82);
+    }
+    .links a:hover{
+      border-color: rgba(76,201,240,.32);
+      box-shadow: 0 0 18px rgba(76,201,240,.16);
+    }
+
+    .divider{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,.25), transparent);
+      margin-top: 12px;
+      opacity: .75;
+    }
+
+    /* Roadmap */
+    .roadmap{ list-style:none; padding:0; margin:10px 0 0; }
+    .roadmap li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 0;
+      border-top:1px solid rgba(232,241,251,.10);
+      color: var(--muted);
+    }
+    .roadmap li:first-child{ border-top:none; }
+    .check, .todo{
+      width:22px; height:22px;
+      border-radius:8px;
+      display:grid; place-items:center;
+      flex:0 0 auto;
+      margin-top:2px;
+      font-family:var(--mono);
+      font-size:12px;
+      border:1px solid rgba(232,241,251,.14);
+    }
+    .check{
+      background: rgba(76,201,240,.10);
+      border-color: rgba(76,201,240,.35);
+      box-shadow: 0 0 18px rgba(76,201,240,.16);
+      color: rgba(232,241,251,.92);
+    }
+    .todo{
+      background: rgba(232,241,251,.05);
+      color: rgba(232,241,251,.60);
+    }
+
+    footer{
+      margin-top:18px;
+      color: rgba(232,241,251,.60);
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .small{ color: rgba(232,241,251,.58); font-size:12px; }
+
+    @media (max-width: 860px){
+      .span-7, .span-5{ grid-column: span 12; }
+      nav{ display:none; }
+      header{ padding-bottom:14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gridlines" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="name">[DEIN NAME]</span>
+        <span class="tag">edge · ml · systems</span>
+        <!-- Logo später:
+          <img src="logo.png" alt="[DEIN NAME] Logo" style="height:28px; margin-left:8px;" />
+        -->
+      </div>
+
+      <nav>
+        <a href="#profil">Profil</a>
+        <a href="#projekt">Edge-AI</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="profil">
+      <span class="kicker"><span class="dot"></span> Portfolio & Projekt-Dokumentation (langfristig)</span>
+
+      <h1>Softwareentwicklung · Edge-AI · KI/ML</h1>
+      <p class="sub">
+        Hi, ich bin <strong>[DEIN NAME]</strong> – Softwareentwickler (C#, Angular) und derzeit im berufsbegleitenden
+        <strong>B.Sc. Informatik</strong> mit Schwerpunkt <strong>Künstliche Intelligenz / Machine Learning</strong> (WBH).
+        Diese Seite bündelt mein technisches Profil und dokumentiert ein praxisnahes Edge-AI-Projekt.
+      </p>
+
+      <div class="grid">
+        <div class="card span-7">
+          <h2>Aktueller Status</h2>
+          <p>
+            <strong>Aktuell nehme ich aufgrund meines Studiums keine externen Aufträge an.</strong>
+            Ich nutze die Zeit gezielt für Kompetenzaufbau, Experimentieren und Infrastrukturarbeit.
+          </p>
+          <div class="note">
+            Ich teile Meilensteine und Erkenntnisse, sobald sie für andere wirklich nützlich sind – ohne Sales-Druck.
+          </div>
+
+          <div class="badges">
+            <span class="badge">C#</span>
+            <span class="badge">Angular</span>
+            <span class="badge">Python (im Aufbau)</span>
+            <span class="badge accent">MQTT</span>
+            <span class="badge accent">Embedded / Raspberry Pi</span>
+            <span class="badge">Edge Inference (geplant)</span>
+          </div>
+        </div>
+
+        <div class="card span-5" id="kontakt">
+          <h2>Kontakt & Links</h2>
+          <p>Für fachlichen Austausch (Edge, MQTT, Embedded, KI/ML):</p>
+          <div class="links">
+            <a href="[LINKEDIN-URL]" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="[GITHUB-URL]" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:[DEINE-MAIL]">E-Mail</a>
+          </div>
+          <p class="small" style="margin-top:10px;">Tipp: Links sind Platzhalter – einfach ersetzen.</p>
+        </div>
+
+        <div class="card span-12" id="projekt">
+          <h2>Projekt: Edge-AI Testumgebung (isoliertes Netz)</h2>
+          <p>
+            Ich baue eine kleine, isolierte Hardware-Umgebung mit mehreren Embedded-Geräten (u. a. Raspberry Pis) auf.
+            Ziel ist es, später ML-Modelle <strong>offline am Edge</strong> auszuführen – ohne Cloud-Abhängigkeit – und den Betrieb
+            (Deployment, Updates, Monitoring) realitätsnah zu testen.
+          </p>
+          <p>
+            <strong>Warum?</strong> Viele KI-Projekte scheitern nicht am Modell, sondern an Infrastruktur, Betrieb und Robustheit.
+            Dieses Projekt soll diese “unsichtbare” Arbeit greifbar machen.
+          </p>
+          <div class="divider" aria-hidden="true"></div>
+          <p class="small" style="margin-top:10px;">
+            Ich veröffentliche nur Übersichten & Lessons Learned – keine sensiblen Details (Netzwerk, Credentials, Sicherheits-Setup).
+          </p>
+        </div>
+
+        <div class="card span-12" id="roadmap">
+          <h2>Roadmap (Meilensteine)</h2>
+          <ul class="roadmap">
+            <li>
+              <span class="check">✓</span>
+              <div><strong>Scope & Komponenten definiert</strong><br/>Zielbild, Randbedingungen, grobe Architektur.</div>
+            </li>
+            <li>
+              <span class="todo">•</span>
+              <div><strong>Isoliertes Netz aufgebaut</strong><br/>Segmentierung, Basis-Connectivity, Remote-Zugriff (sicher).</div>
+            </li>
+            <li>
+              <span class="todo">•</span>
+              <div><strong>MQTT Messaging</strong><br/>Broker, Topics/Schema, Retain/QoS-Strategie.</div>
+            </li>
+            <li>
+              <span class="todo">•</span>
+              <div><strong>Deployment-Workflow</strong><br/>Reproduzierbare Builds & Updates ohne Internet-Abhängigkeit.</div>
+            </li>
+            <li>
+              <span class="todo">•</span>
+              <div><strong>Erste Edge-Inference Services</strong><br/>Baseline-Modelle, Monitoring/Logging, Latenz/Resourcen.</div>
+            </li>
+          </ul>
+          <p class="small">Posting-Frequenz: nur bei echten Meilensteinen (ca. alle 2–3 Monate).</p>
+        </div>
+      </div>
+
+      <footer>
+        <div>© <span id="year"></span> [DEIN NAME]</div>
+        <div class="links">
+          <a href="#profil">Nach oben</a>
+          <a href="[IMPRINT-URL-ODER-REPO]" target="_blank" rel="noreferrer">Impressum/Repo</a>
+        </div>
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
