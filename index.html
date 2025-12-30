@@ -88,60 +88,87 @@
     }
 
     /* Header: komplett transparent, nur Blur + Linie */
-    header{
-      position:sticky;
-      top:0;
-      z-index:30;
+header{
+  position: sticky;
+  top: 0;
+  z-index: 30;
 
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
 
-      padding: 14px 0 16px;
+  padding: 14px 0 16px;
 
-      background: transparent;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+  /* WICHTIG: kein eigener Hintergrund */
+  background: transparent;
 
-    header::after{
-      content:"";
-      position:absolute;
-      left:0; right:0;
-      bottom: 6px;
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
-      opacity:.55;
-      pointer-events:none;
-    }
+  /* Blur ja, aber ohne dunklen Balken */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
+/* nur eine Tron-Linie, kein Block */
+header::after{
+  content:"";
+  position:absolute;
+  left:0; right:0;
+  bottom: 6px;
+  height:1px;
+  background: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
+  opacity:.55;
+  pointer-events:none;
+}
 
-      padding: 8px 10px;
-      border-radius:999px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
 
-      background: rgba(10,14,22,.18);
-      border: 1px solid rgba(96,165,250,.18);
-    }
-    .brand .mark{
-      width:10px; height:10px; border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, var(--a3), var(--a1));
-      box-shadow: 0 0 18px rgba(76,201,240,.22);
-    }
-    .brand .name{ font-weight:650; letter-spacing:.25px; }
-    .brand .tag{
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(232,241,251,.70);
-      border-left:1px solid rgba(232,241,251,.14);
-      padding-left:10px;
-      margin-left:2px;
-      white-space:nowrap;
-    }
+  /* Dezent, damit es nicht wie ein Button wirkt */
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: rgba(10,14,22,.08);
+  border: 1px solid rgba(96,165,250,.14);
+}
+
+.brand img.logo{
+  height: 34px;
+  width: auto;
+  display:block;
+  flex: 0 0 auto;
+  opacity: .98;
+  filter: drop-shadow(0 0 10px rgba(76,201,240,.14));
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  line-height:1.1;
+}
+
+.brand-name{
+  font-weight: 650;
+  letter-spacing: .18px;
+  font-size: 14px;
+  color: rgba(232,241,251,.92);
+}
+
+.brand-tag{
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .10px;
+  color: rgba(232,241,251,.65);
+}
+
+@media (max-width: 860px){
+  .brand{ padding: 6px 9px; gap:10px; }
+  .brand img.logo{ height: 30px; }
+  .brand-name{ font-size: 13px; }
+  .brand-tag{ font-size: 11px; }
+}
 
     nav{ display:flex; gap:10px; flex-wrap:wrap; }
     nav a{
@@ -430,14 +457,14 @@
 
   <div class="wrap">
     <header>
-      <div class="brand">
-        <span class="mark" aria-hidden="true"></span>
-        <span class="name">Michael Wilmes</span>
-        <span class="tag">edge · ml · systems</span>
-        <!-- Logo später:
-          <img src="logo.png" alt="[DEIN NAME] Logo" style="height:28px; margin-left:8px;" />
-        -->
+    <div class="brand">
+      <img class="logo" src="assets/logo_2.png" alt="Michael Wilmes Logo" />
+      <div class="brand-text">
+        <div class="brand-name">MICHAEL WILMES</div>
+        <div class="brand-tag">development · edge · ml</div>
       </div>
+    </div>
+
 
       <nav>
         <a href="#profil">Profil</a>
@@ -449,9 +476,7 @@
 
     <section class="hero" id="profil">
       <span class="kicker"><span class="dot"></span> Portfolio & Projekt-Dokumentation (langfristig)</span>
-      <div class="hero-logo">
-        <img src="assets/logo_2.png" alt="Michael Wilmes Logo" />
-      </div>
+ 
 
       <h1>Softwareentwicklung · Edge-AI · KI/ML</h1>
       <p class="sub">
