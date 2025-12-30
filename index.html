@@ -386,6 +386,37 @@
     }
     .small{ color: rgba(232,241,251,.58); font-size:12px; }
 
+    .brand img.logo {
+  height: 34px;           /* Header-Größe */
+  width: auto;
+  display: block;
+  opacity: .95;           /* leicht gedimmt, wirkt edel */
+  filter: drop-shadow(0 0 10px rgba(76,201,240,.18));
+}
+
+@media (max-width: 860px){
+  .brand img.logo { height: 30px; }
+}
+
+/* Optional: großes Logo im Hero */
+.hero-logo {
+  margin: 10px 0 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-logo img {
+  height: 90px;           /* Hero-Größe */
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(76,201,240,.22));
+  opacity: .98;
+}
+
+@media (max-width: 860px){
+  .hero-logo img { height: 70px; }
+}
     @media (max-width: 860px){
       .span-7, .span-5{ grid-column: span 12; }
       nav{ display:none; }
@@ -401,7 +432,7 @@
     <header>
       <div class="brand">
         <span class="mark" aria-hidden="true"></span>
-        <span class="name">[DEIN NAME]</span>
+        <span class="name">Michael Wilmes</span>
         <span class="tag">edge · ml · systems</span>
         <!-- Logo später:
           <img src="logo.png" alt="[DEIN NAME] Logo" style="height:28px; margin-left:8px;" />
@@ -418,6 +449,9 @@
 
     <section class="hero" id="profil">
       <span class="kicker"><span class="dot"></span> Portfolio & Projekt-Dokumentation (langfristig)</span>
+      <div class="hero-logo">
+        <img src="assets/logo_2.png" alt="Michael Wilmes Logo" />
+      </div>
 
       <h1>Softwareentwicklung · Edge-AI · KI/ML</h1>
       <p class="sub">
